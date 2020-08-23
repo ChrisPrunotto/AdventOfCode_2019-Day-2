@@ -26,43 +26,38 @@ int main(){
         }
     }
 
+    //copy the intcode onto a separate vector, to always have a fresh copy without re-reading the input file.
     for (int c=0; c<intcode.size(); c++){
         freshIntcode.push_back(intcode[c]);
     }
 
-/*     //print debugging to ensure I grabbed the entire file correctly.
-    for (int d=0; d<intcode.size(); d++){
-        std::cout << "original: " << intcode[d] << " copy: " << freshIntcode[d] << "\n";
-    } */
-
     bool bHalt = false, bSuccess = false;
 
      while (!bHalt){
-        for (int n=0; n<=99;n++) {
-            for (int v=0; v<=99;v++) {
+        for (int n=0; n<=99;n++) {                                  //iterate noun values
+            for (int v=0; v<=99;v++) {                              //interate verb values 
                 if (!bSuccess){
 
-                    //reset the intcode
+                    //refresh the intcode back to default using the copy
                     for (int r=0; r<intcode.size(); r++){
                         intcode[r] = freshIntcode[r];
                     }
                     
-                    //modify the intcode to the current noun/verb pair.
                     intcode[1] = n;
                     intcode[2] = v;
-
-                    //iterate over intcode
+                    
+                    //iterate over opcodes
                     for (int i=0; i<intcode.size(); i += 4){
-
                         int opcode = intcode[i];
+
+                        
                         int posA = intcode[i+1];
                         int posB = intcode[i+2];
                         int posResult = intcode[i+3];
 
-                        //log out each encountered opcode and it's instructions.
+                        //DEBUG: log out each encountered opcode
                         //std::cout << "\nopcode: " << opcode << " PosA: " << posA << " PosB: " << posB << " posResult: " << posResult;
 
-                    
                         switch(opcode){
                         case 1:
                             intcode[posResult] = intcode[posA] + intcode[posB];
@@ -89,9 +84,12 @@ int main(){
                 }
             }
         }
-        bHalt = true;
+        bHalt = true;       //safety break;
     }
 }
+
+
+
 
 /*
     What I learned in this challenge:
